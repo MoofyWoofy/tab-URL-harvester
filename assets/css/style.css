@@ -1,0 +1,19 @@
+* {
+  overflow: auto !important;
+  line-height: 1.75;
+}
+.w-full {
+  width: 100%;
+}
+#root {
+  max-height: 30%;
+}
+#root > .url + .url {
+  /* border-top: solid #505050 1px; */
+  box-shadow: 0 -1px 0 #aaaaaa;
+}
+.url {
+  overflow-x: hidden !important;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
