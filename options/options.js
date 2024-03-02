@@ -27,7 +27,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     case "markdown":
       copyFormatElement.selectedIndex = 2;
       break;
-    case "url-only":
+    case "url":
       copyFormatElement.selectedIndex = 3;
       break;
   }

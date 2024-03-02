@@ -1,10 +1,18 @@
 "use strict";
 
+/**
+ * Checks if URL is in bookmarks
+ * @param {string} url
+ */
 async function isURLBookmarked(url) {
   const bookmarkItems = await browser.bookmarks.search(url);
   return bookmarkItems.length ? true : false;
 }
 
+/**
+ * @param {string} title
+ * @param {string} url
+ */
 function returnUrlElement(title, url) {
   const label = document.createElement("label");
   label.style.width = "100%";
@@ -33,6 +41,7 @@ async function displayURLs() {
     if (includeBookmark) {
       urlList.appendChild(returnUrlElement(title, url));
     } else {
+      // If URL is not in bookmark 
       if (!(await isURLBookmarked(url))) {
         urlList.appendChild(returnUrlElement(title, url));
       }
@@ -41,13 +50,13 @@ async function displayURLs() {
 }
 
 document.getElementById("btnCopy").addEventListener("click", async (e) => {
-  let textToCopy = [];
+  const textToCopy = [];
   const urlElements = document.querySelectorAll(".url");
+  const { format } = await browser.storage.local.get({ format: "basic" });
   for (const ele of urlElements) {
     if (ele.checked) {
       const title = ele.getAttribute("data-title");
       const url = ele.getAttribute("data-url");
-      const { format } = await browser.storage.local.get({ format: "basic" });
       switch (format) {
         case "basic":
           textToCopy.push(`${title}: ${url}`);
@@ -58,7 +67,7 @@ document.getElementById("btnCopy").addEventListener("click", async (e) => {
         case "markdown":
           textToCopy.push(`[${title}](${url})`);
           break;
-        case "url-only":
+        case "url":
           textToCopy.push(`${url}`);
           break;
       }
