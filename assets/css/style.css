@@ -8,11 +8,11 @@
 #root {
   max-height: 30%;
 }
-#root > .url + .url {
+#root > .url-container + .url-container {
   /* border-top: solid #505050 1px; */
   box-shadow: 0 -1px 0 #aaaaaa;
 }
-.url {
+.url-container {
   overflow-x: hidden !important;
   white-space: nowrap;
   text-overflow: ellipsis;
