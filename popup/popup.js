@@ -35,13 +35,16 @@ function returnUrlElement(title, url) {
 async function displayURLs() {
   const tabs = await browser.tabs.query({ currentWindow: true }); // Get all tabs in current window
   const urlList = document.getElementById("root");
-  const { includeBookmark } = await browser.storage.local.get({ includeBookmark: false });
+  const { includeBookmark, tags } = await browser.storage.local.get({ includeBookmark: false, tags: [] });
 
   for (const { title, url } of tabs) {
+    const isURLInIgnoreList = tags.some((pattern) => RegExp(pattern).test(url));
+    if (isURLInIgnoreList) continue;
+
     if (includeBookmark) {
       urlList.appendChild(returnUrlElement(title, url));
     } else {
-      // If URL is not in bookmark 
+      // If URL is not in bookmark
       if (!(await isURLBookmarked(url))) {
         urlList.appendChild(returnUrlElement(title, url));
       }

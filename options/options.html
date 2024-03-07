@@ -4,6 +4,8 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" href="/assets/css/bulma.min.css" />
     <link rel="stylesheet" href="/assets/css/style.css" />
+    <link rel="stylesheet" href="/assets/css/bulma-tagsinput.min.css">
+    <script src="/assets/js/bulma-tagsinput.min.js"></script>
   </head>
   <body>
     <div class="container is-fluid">
@@ -32,21 +34,14 @@
 
       <h3>Preview formats:</h3>
 
-      <code id="formatPreview" style="display:block; white-space:pre-wrap">
-Basic:
+      <code id="formatPreview" style="display:block; white-space:pre-wrap">Basic:
 {Title}: {URL}
 Example Domain: https://example.com
 
-Json:
+JSON:
 [
-  {
-    title:"",
-    url:""
-  },
-  {
-    title:"Example Domain",
-    url:""
-  }
+  { title:"", url:""},
+  { title:"Example Domain", url:""}
 ]
 
 Markdown:
@@ -55,8 +50,16 @@ Markdown:
 
 URL only:
 URL
-https://example.com
-      </code>
+https://example.com</code>
+
+      <div class="mt-4"></div>
+
+      <div class="field">
+        <label class="label">URL patterns to ignore</label>
+        <div class="control">
+          <input class="input" type="text" data-type="tags" placeholder="eg: https://www.google.com">
+        </div>
+      </div>
 
       <div class="mb-4"></div>
     </div>
