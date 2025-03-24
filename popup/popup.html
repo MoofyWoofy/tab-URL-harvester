@@ -6,13 +6,30 @@
     <link rel="stylesheet" href="/assets/css/style.css" />
   </head>
   <body>
-    <div class="container is-fluid">
-      <div id="root"></div>
-
-      <button class="button is-link is-light w-full" id="btnCopy">
-        <span class="icon"><i class="fas fa-clipboard"></i></span>
-        Copy
-      </button>
+    <!-- Tabs navigation -->
+    <div class="tabs is-fullwidth is-toggle">
+      <ul>
+        <li class="is-active">
+          <a data-tab-url="#tab1">Copy Tabs</a>
+        </li>
+        <li>
+          <a data-tab-url="#tab2">Load URLs</a>
+        </li>
+      </ul>
+    </div>
+    <!-- Tabs content -->
+    <div id="tab_content" class="container is-fluid" style="width: 40rem">
+      <div data-tab-content="active" id="tab1">
+        <div id="root" style="margin-block-end: 0.5rem"></div>
+        <button class="button is-link is-light w-full" id="btnCopy">
+          <span class="icon"><i class="fas fa-clipboard"></i></span>
+          Copy
+        </button>
+      </div>
+      <div data-tab-content="" id="tab2">
+        <textarea name="load-url" id="load-url" style="width: 100%"></textarea>
+        <button class="button is-link is-light w-full" id="btnLoad">Load</button>
+      </div>
     </div>
 
     <script src="/popup/popup.js"></script>

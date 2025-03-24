@@ -35,7 +35,10 @@ function returnUrlElement(title, url) {
 async function displayURLs() {
   const tabs = await browser.tabs.query({ currentWindow: true }); // Get all tabs in current window
   const urlList = document.getElementById("root");
-  const { includeBookmark, tags } = await browser.storage.local.get({ includeBookmark: false, tags: [] });
+  const { includeBookmark, tags } = await browser.storage.local.get({
+    includeBookmark: false,
+    tags: [],
+  });
 
   for (const { title, url } of tabs) {
     const isURLInIgnoreList = tags.some((pattern) => RegExp(pattern).test(url));
@@ -50,6 +53,21 @@ async function displayURLs() {
       }
     }
   }
+}
+
+/**
+ * Checks if URL is in bookmarks
+ * @param {string} url
+ * @returns {boolean} true if URL is valid
+ */
+function isUrlValid(url) {
+  let foo;
+  try {
+    foo = new URL(url);
+  } catch (err) {
+    return false;
+  }
+  return foo.protocol === "http:" || foo.protocol === "https:";
 }
 
 document.getElementById("btnCopy").addEventListener("click", async (e) => {
@@ -85,3 +103,56 @@ document.getElementById("btnCopy").addEventListener("click", async (e) => {
 });
 
 displayURLs();
+
+// function to get each tab details
+const tabs = document.querySelectorAll("[data-tab-url]");
+const tabInfos = document.querySelectorAll("#tab_content > *");
+console.log(tabs);
+console.log(tabInfos);
+
+tabs.forEach((tab) => {
+  tab.addEventListener("click", (e) => {
+    // Clear tabs
+    tabs.forEach((e) => e.parentElement.classList.remove("is-active"));
+    e.target.parentElement.classList.add("is-active");
+    console.log(e);
+
+    // Change navigation
+
+    const target = document.querySelector(tab.dataset.tabUrl);
+    console.log(target);
+
+    tabInfos.forEach((tabInfo) => {
+      tabInfo.dataset.tabContent = "";
+    });
+    target.dataset.tabContent = "active";
+  });
+});
+
+document.getElementById("btnLoad").addEventListener("click", async (e) => {
+  const urls = document.getElementById("load-url").value.split("\n");
+  const { format } = await browser.storage.local.get({ format: "basic" });
+  for (const url of urls) {
+    // filter format
+    let cleanUrl;
+    switch (format) {
+      case "basic":
+        cleanUrl = url.split(":")[1];
+        break;
+      case "json":
+        cleanUrl = url.split(",")[1].substring(4);
+        break;
+      case "markdown":
+        cleanUrl = url.split("(")[1];
+        break;
+      case "url":
+        cleanUrl = url;
+        break;
+    }
+    if (isUrlValid(cleanUrl)) {
+      browser.tabs.create({ url: cleanUrl });
+    }
+  }
+  // Clear text area field
+  document.getElementById("load-url").value = "";
+});
