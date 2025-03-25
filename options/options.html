@@ -40,8 +40,8 @@ Example Domain: https://example.com
 
 JSON:
 [
-  { title:"", url:""},
-  { title:"Example Domain", url:""}
+  {"title":"", url:""},
+  {"title":"Example Domain", "url":"https://example.com"}
 ]
 
 Markdown:
@@ -49,7 +49,6 @@ Markdown:
 [Example Domain](https://example.com)
 
 URL only:
-URL
 https://example.com</code>
 
       <div class="mt-4"></div>
@@ -58,6 +57,27 @@ https://example.com</code>
         <label class="label">URL patterns to ignore</label>
         <div class="control">
           <input class="input" type="text" data-type="tags" placeholder="eg: https://www.google.com">
+        </div>
+      </div>
+
+      <div class="mt-4"></div>
+
+      <div class="control">
+        <label class="checkbox">
+          <input type="checkbox" id="isLoadSameAsCopy" />
+          Use load format same as copy
+        </label>
+      </div>
+
+      <div class="control">
+        <span>Load Format: </span>
+        <div class="select is-primary is-small">
+          <select id="loadFormat">
+            <option value="basic">Basic</option>
+            <option value="json">JSON</option>
+            <option value="markdown">Markdown</option>
+            <option value="url">URL only</option>
+          </select>
         </div>
       </div>
 

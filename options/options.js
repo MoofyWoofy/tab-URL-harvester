@@ -2,23 +2,35 @@
 
 const copyFormatElement = document.getElementById("copyFormat");
 const includeBookmarkElement = document.getElementById("includeBookmark");
+const isLoadSameAsCopyElement = document.getElementById("isLoadSameAsCopy");
+const loadFormatElement = document.getElementById("loadFormat");
 
 copyFormatElement.addEventListener("change", (e) => {
-  setBrowserExtensionLocalStorage({ format: e.target.value });
+  setBrowserExtensionLocalStorage({ copyFormat: e.target.value });
 });
 
 includeBookmarkElement.addEventListener("change", (e) => {
   setBrowserExtensionLocalStorage({ includeBookmark: e.target.checked });
 });
 
-window.addEventListener("DOMContentLoaded", async () => {
-  const { format, includeBookmark, tags } = await browser.storage.local.get({
-    format: "basic",
-    includeBookmark: false,
-    tags: [],
-  });
+isLoadSameAsCopyElement.addEventListener("change", (e) => {
+  setBrowserExtensionLocalStorage({ isLoadSameAsCopy: e.target.checked });
+});
+loadFormatElement.addEventListener("change", (e) => {
+  setBrowserExtensionLocalStorage({ loadFormat: e.target.value });
+});
 
-  switch (format) {
+window.addEventListener("DOMContentLoaded", async () => {
+  const { copyFormat, includeBookmark, tags, isLoadSameAsCopy, loadFormat } =
+    await browser.storage.local.get({
+      copyFormat: "basic",
+      includeBookmark: false,
+      tags: [],
+      isLoadSameAsCopy: true,
+      loadFormat: "basic",
+    });
+
+  switch (copyFormat) {
     case "basic":
       copyFormatElement.selectedIndex = 0;
       break;
@@ -51,6 +63,23 @@ window.addEventListener("DOMContentLoaded", async () => {
   }
   tagsElement.BulmaTagsInput().on("after.add", saveTagsToStorage); // Listen to event: Triggered once a tag has been added
   tagsElement.BulmaTagsInput().on("after.remove", saveTagsToStorage); // Listen to event: Triggered once a tag has been removed
+
+  isLoadSameAsCopyElement.checked = isLoadSameAsCopy;
+
+  switch (loadFormat) {
+    case "basic":
+      loadFormatElement.selectedIndex = 0;
+      break;
+    case "json":
+      loadFormatElement.selectedIndex = 1;
+      break;
+    case "markdown":
+      loadFormatElement.selectedIndex = 2;
+      break;
+    case "url":
+      loadFormatElement.selectedIndex = 3;
+      break;
+  }
 });
 
 function setBrowserExtensionLocalStorage(obj) {

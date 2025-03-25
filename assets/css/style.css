@@ -25,3 +25,8 @@
 [data-tab-content="active"] {
   display: block;
 }
+
+/* For load format options */
+.control:has(#isLoadSameAsCopy:checked) + .control:has(#loadFormat) {
+  display: none;
+}

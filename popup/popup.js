@@ -73,17 +73,19 @@ function isUrlValid(url) {
 document.getElementById("btnCopy").addEventListener("click", async (e) => {
   const textToCopy = [];
   const urlElements = document.querySelectorAll(".url");
-  const { format } = await browser.storage.local.get({ format: "basic" });
+  const { copyFormat } = await browser.storage.local.get({
+    copyFormat: "basic",
+  });
   for (const ele of urlElements) {
     if (ele.checked) {
       const title = ele.getAttribute("data-title");
       const url = ele.getAttribute("data-url");
-      switch (format) {
+      switch (copyFormat) {
         case "basic":
           textToCopy.push(`${title}: ${url}`);
           break;
         case "json":
-          textToCopy.push(`{title:"${title}",url:"${url}"}`);
+          textToCopy.push(`{"title":"${title}","url":"${url}"}`);
           break;
         case "markdown":
           textToCopy.push(`[${title}](${url})`);
@@ -107,20 +109,16 @@ displayURLs();
 // function to get each tab details
 const tabs = document.querySelectorAll("[data-tab-url]");
 const tabInfos = document.querySelectorAll("#tab_content > *");
-console.log(tabs);
-console.log(tabInfos);
 
 tabs.forEach((tab) => {
   tab.addEventListener("click", (e) => {
     // Clear tabs
     tabs.forEach((e) => e.parentElement.classList.remove("is-active"));
     e.target.parentElement.classList.add("is-active");
-    console.log(e);
 
     // Change navigation
 
     const target = document.querySelector(tab.dataset.tabUrl);
-    console.log(target);
 
     tabInfos.forEach((tabInfo) => {
       tabInfo.dataset.tabContent = "";
@@ -131,19 +129,31 @@ tabs.forEach((tab) => {
 
 document.getElementById("btnLoad").addEventListener("click", async (e) => {
   const urls = document.getElementById("load-url").value.split("\n");
-  const { format } = await browser.storage.local.get({ format: "basic" });
+  const { isLoadSameAsCopy, loadFormat, copyFormat } =
+    await browser.storage.local.get({
+      copyFormat: "basic",
+      isLoadSameAsCopy: true,
+      loadFormat: "basic",
+    });
+  // Set format depending on options
+  const format = isLoadSameAsCopy ? copyFormat : loadFormat;
+
   for (const url of urls) {
     // filter format
     let cleanUrl;
     switch (format) {
       case "basic":
-        cleanUrl = url.split(":")[1];
+        cleanUrl = "http" + url.split(": http")[1];
         break;
       case "json":
-        cleanUrl = url.split(",")[1].substring(4);
+        cleanUrl = JSON.parse(url).url;
         break;
       case "markdown":
-        cleanUrl = url.split("(")[1];
+        try {
+          cleanUrl = url.match(/^\[(.+)\]\((https?:\/\/.+)\)$/)[2];
+        } catch (err) {
+          continue;
+        }
         break;
       case "url":
         cleanUrl = url;
