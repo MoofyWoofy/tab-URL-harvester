@@ -8,7 +8,7 @@
     <script src="/assets/js/bulma-tagsinput.min.js"></script>
   </head>
   <body>
-    <div class="container is-fluid">
+    <div class="container is-fluid optionsDiv">
       <div class="mt-4"></div>
 
       <div class="control hide">
@@ -18,7 +18,7 @@
         </label>
       </div>
 
-      <div class="control">
+      <div class="control mb-2">
         <span>Copy Format: </span>
         <div class="select is-primary">
           <select id="copyFormat">
@@ -29,10 +29,6 @@
           </select>
         </div>
       </div>
-
-      <div class="mt-4"></div>
-
-      <h3>Preview formats:</h3>
 
       <code id="formatPreview" style="display:block; white-space:pre-wrap">Basic:
 {Title}: {URL}
@@ -50,18 +46,24 @@ URL only:
 https://example.com
 </code>
 
-      <div class="mt-4"></div>
-
       <div class="field">
         <label class="label">URL patterns to ignore</label>
         <div class="control">
           <input class="input" type="text" data-type="tags" placeholder="eg: https://www.google.com">
         </div>
       </div>
-
-      <div class="mt-4"></div>
-
+      
       <div class="control">
+        <span>Copy tabs from: </span>
+        <div class="select is-primary">
+          <select id="copyWindow">
+            <option value="current">Current Window</option>
+            <option value="all">All Windows</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="control mt-4 mb-4">
         <label class="checkbox is-block">
           <input type="checkbox" id="isLoadSameAsCopy" />
           Use load format same as copy
@@ -70,7 +72,7 @@ https://example.com
 
       <div class="control">
         <span>Load Format: </span>
-        <div class="select is-primary is-small">
+        <div class="select is-primary">
           <select id="loadFormat">
             <option value="basic">Basic</option>
             <option value="json">JSON</option>
@@ -80,7 +82,6 @@ https://example.com
         </div>
       </div>
 
-      <div class="mb-4"></div>
     </div>
 
     <script src="options.js"></script>

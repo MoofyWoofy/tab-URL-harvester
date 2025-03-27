@@ -32,11 +32,16 @@
 }
 
 /* Increase font size on android */
-@media (min-width: 768px){
+@media (min-width: 768px) {
   html {
     font-size: 24px;
   }
-  .hide{
+  .hide {
     display: none;
   }
+}
+
+/* Options page, give margin-bottom to the last child */
+.container.is-fluid.optionsDiv > :last-child {
+  margin-block-end: 1rem;
 }

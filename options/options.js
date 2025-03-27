@@ -4,6 +4,7 @@ const copyFormatElement = document.getElementById("copyFormat");
 const includeBookmarkElement = document.getElementById("includeBookmark");
 const isLoadSameAsCopyElement = document.getElementById("isLoadSameAsCopy");
 const loadFormatElement = document.getElementById("loadFormat");
+const copyWindowElement = document.getElementById("copyWindow");
 
 copyFormatElement.addEventListener("change", (e) => {
   setBrowserExtensionLocalStorage({ copyFormat: e.target.value });
@@ -20,14 +21,19 @@ loadFormatElement.addEventListener("change", (e) => {
   setBrowserExtensionLocalStorage({ loadFormat: e.target.value });
 });
 
+copyWindowElement.addEventListener("change", (e) => {
+  setBrowserExtensionLocalStorage({ copyWindow: e.target.value });
+});
+
 window.addEventListener("DOMContentLoaded", async () => {
-  const { copyFormat, includeBookmark, tags, isLoadSameAsCopy, loadFormat } =
+  const { copyFormat, includeBookmark, tags, isLoadSameAsCopy, loadFormat, copyWindow } =
     await browser.storage.local.get({
       copyFormat: "basic",
       includeBookmark: false,
       tags: [],
       isLoadSameAsCopy: true,
       loadFormat: "basic",
+      copyWindow: "current",
     });
 
   switch (copyFormat) {
@@ -80,6 +86,16 @@ window.addEventListener("DOMContentLoaded", async () => {
       loadFormatElement.selectedIndex = 3;
       break;
   }
+
+  // copy window
+  switch (copyWindow) {
+    case "current":
+      copyWindowElement.selectedIndex = 0;
+      break;
+    case "all":
+      copyWindowElement.selectedIndex = 1;
+      break;
+  }
 });
 
 function setBrowserExtensionLocalStorage(obj) {
@@ -92,7 +108,6 @@ function setBrowserExtensionLocalStorage(obj) {
 }
 
 function saveTagsToStorage(data) {
-  // console.log(data.item);
   const tags = document.querySelector("[data-type=tags]").BulmaTagsInput().items;
   setBrowserExtensionLocalStorage({ tags: tags });
 }

@@ -39,12 +39,19 @@ function returnUrlElement(title, url) {
 }
 
 async function displayURLs() {
-  const tabs = await browser.tabs.query({ currentWindow: true }); // Get all tabs in current window
-  const urlList = document.getElementById("root");
-  const { includeBookmark, tags } = await browser.storage.local.get({
+  const { includeBookmark, tags, copyWindow } = await browser.storage.local.get({
     includeBookmark: false,
     tags: [],
+    copyWindow: "current",
   });
+
+  // Get tab URL, depending on settings, current or all windows
+  const tabs =
+    copyWindow === "current"
+      ? await browser.tabs.query({ currentWindow: true })
+      : await browser.tabs.query({});
+
+  const urlList = document.getElementById("root");
 
   for (const { title, url } of tabs) {
     const isURLInIgnoreList = tags.some((pattern) => RegExp(pattern).test(url));
@@ -176,13 +183,13 @@ document.getElementById("btnLoad").addEventListener("click", async (e) => {
     }
   }
   // creates tabs with valid URLs
-  validUrls.forEach(e => {
-    browser.tabs.create({ url: e });    
+  validUrls.forEach((e) => {
+    browser.tabs.create({ url: e });
   });
-  
-  if (invalidUrls.length !== 0) {    
+
+  if (invalidUrls.length !== 0) {
     document.getElementById("load-url").value = invalidUrls.join("\n");
-    alert(`URLs not valid:\n${invalidUrls.join('\n')}`)
+    alert(`URLs not valid:\n${invalidUrls.join("\n")}`);
   } else {
     // Clear text area field
     document.getElementById("load-url").value = "";
