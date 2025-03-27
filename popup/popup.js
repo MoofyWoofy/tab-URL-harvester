@@ -3,10 +3,16 @@
 /**
  * Checks if URL is in bookmarks
  * @param {string} url
+ * @returns {boolean} true if URL is bookmarked
  */
 async function isURLBookmarked(url) {
-  const bookmarkItems = await browser.bookmarks.search(url);
-  return bookmarkItems.length ? true : false;
+  // Firefox for Android doesn’t support the bookmarks API, so for Android always return false
+  try {
+    const bookmarkItems = await browser.bookmarks.search(url);
+    return bookmarkItems.length ? true : false;
+  } catch (err) {
+    return false;
+  }
 }
 
 /**
@@ -129,14 +135,15 @@ tabs.forEach((tab) => {
 
 document.getElementById("btnLoad").addEventListener("click", async (e) => {
   const urls = document.getElementById("load-url").value.split("\n");
-  const { isLoadSameAsCopy, loadFormat, copyFormat } =
-    await browser.storage.local.get({
-      copyFormat: "basic",
-      isLoadSameAsCopy: true,
-      loadFormat: "basic",
-    });
+  const { isLoadSameAsCopy, loadFormat, copyFormat } = await browser.storage.local.get({
+    copyFormat: "basic",
+    isLoadSameAsCopy: true,
+    loadFormat: "basic",
+  });
   // Set format depending on options
   const format = isLoadSameAsCopy ? copyFormat : loadFormat;
+  const validUrls = [];
+  const invalidUrls = [];
 
   for (const url of urls) {
     // filter format
@@ -160,9 +167,24 @@ document.getElementById("btnLoad").addEventListener("click", async (e) => {
         break;
     }
     if (isUrlValid(cleanUrl)) {
-      browser.tabs.create({ url: cleanUrl });
+      validUrls.push(cleanUrl);
+    } else {
+      // Only add URL if text has data (not empty)
+      if (url.length !== 0) {
+        invalidUrls.push(url);
+      }
     }
   }
-  // Clear text area field
-  document.getElementById("load-url").value = "";
+  // creates tabs with valid URLs
+  validUrls.forEach(e => {
+    browser.tabs.create({ url: e });    
+  });
+  
+  if (invalidUrls.length !== 0) {    
+    document.getElementById("load-url").value = invalidUrls.join("\n");
+    alert(`URLs not valid:\n${invalidUrls.join('\n')}`)
+  } else {
+    // Clear text area field
+    document.getElementById("load-url").value = "";
+  }
 });

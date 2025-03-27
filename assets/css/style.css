@@ -30,3 +30,13 @@
 .control:has(#isLoadSameAsCopy:checked) + .control:has(#loadFormat) {
   display: none;
 }
+
+/* Increase font size on android */
+@media (min-width: 768px){
+  html {
+    font-size: 24px;
+  }
+  .hide{
+    display: none;
+  }
+}

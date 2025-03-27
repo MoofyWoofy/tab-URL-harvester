@@ -11,7 +11,7 @@
     <div class="container is-fluid">
       <div class="mt-4"></div>
 
-      <div class="control">
+      <div class="control hide">
         <label class="checkbox">
           <input type="checkbox" id="includeBookmark" />
           Include bookmarks?
@@ -20,7 +20,7 @@
 
       <div class="control">
         <span>Copy Format: </span>
-        <div class="select is-primary is-small">
+        <div class="select is-primary">
           <select id="copyFormat">
             <option value="basic">Basic</option>
             <option value="json">JSON</option>
@@ -40,16 +40,15 @@ Example Domain: https://example.com
 
 JSON:
 [
-  {"title":"", url:""},
   {"title":"Example Domain", "url":"https://example.com"}
 ]
 
 Markdown:
-[Title](URL)
 [Example Domain](https://example.com)
 
 URL only:
-https://example.com</code>
+https://example.com
+</code>
 
       <div class="mt-4"></div>
 
@@ -63,7 +62,7 @@ https://example.com</code>
       <div class="mt-4"></div>
 
       <div class="control">
-        <label class="checkbox">
+        <label class="checkbox is-block">
           <input type="checkbox" id="isLoadSameAsCopy" />
           Use load format same as copy
         </label>

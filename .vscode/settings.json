@@ -2,5 +2,5 @@
   "css.styleSheets": [
     "assets/css/*.css"
   ],
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false,
 }
