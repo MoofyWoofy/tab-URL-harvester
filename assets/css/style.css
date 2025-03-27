@@ -26,8 +26,8 @@
   display: block;
 }
 
-/* For load format options */
-.control:has(#isLoadSameAsCopy:checked) + .control:has(#loadFormat) {
+/* For paste format options */
+.control:has(#isPasteSameAsCopy:checked) + .control:has(#pasteFormat) {
   display: none;
 }
 

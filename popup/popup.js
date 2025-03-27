@@ -140,15 +140,15 @@ tabs.forEach((tab) => {
   });
 });
 
-document.getElementById("btnLoad").addEventListener("click", async (e) => {
-  const urls = document.getElementById("load-url").value.split("\n");
-  const { isLoadSameAsCopy, loadFormat, copyFormat } = await browser.storage.local.get({
+document.getElementById("btnPaste").addEventListener("click", async (e) => {
+  const urls = document.getElementById("paste-url").value.split("\n");
+  const { isPasteSameAsCopy, pasteFormat, copyFormat } = await browser.storage.local.get({
     copyFormat: "basic",
-    isLoadSameAsCopy: true,
-    loadFormat: "basic",
+    isPasteSameAsCopy: true,
+    pasteFormat: "basic",
   });
   // Set format depending on options
-  const format = isLoadSameAsCopy ? copyFormat : loadFormat;
+  const format = isPasteSameAsCopy ? copyFormat : pasteFormat;
   const validUrls = [];
   const invalidUrls = [];
 
@@ -188,10 +188,10 @@ document.getElementById("btnLoad").addEventListener("click", async (e) => {
   });
 
   if (invalidUrls.length !== 0) {
-    document.getElementById("load-url").value = invalidUrls.join("\n");
+    document.getElementById("paste-url").value = invalidUrls.join("\n");
     alert(`URLs not valid:\n${invalidUrls.join("\n")}`);
   } else {
     // Clear text area field
-    document.getElementById("load-url").value = "";
+    document.getElementById("paste-url").value = "";
   }
 });

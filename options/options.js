@@ -2,8 +2,8 @@
 
 const copyFormatElement = document.getElementById("copyFormat");
 const includeBookmarkElement = document.getElementById("includeBookmark");
-const isLoadSameAsCopyElement = document.getElementById("isLoadSameAsCopy");
-const loadFormatElement = document.getElementById("loadFormat");
+const isPasteSameAsCopyElement = document.getElementById("isPasteSameAsCopy");
+const pasteFormatElement = document.getElementById("pasteFormat");
 const copyWindowElement = document.getElementById("copyWindow");
 
 copyFormatElement.addEventListener("change", (e) => {
@@ -14,11 +14,11 @@ includeBookmarkElement.addEventListener("change", (e) => {
   setBrowserExtensionLocalStorage({ includeBookmark: e.target.checked });
 });
 
-isLoadSameAsCopyElement.addEventListener("change", (e) => {
-  setBrowserExtensionLocalStorage({ isLoadSameAsCopy: e.target.checked });
+isPasteSameAsCopyElement.addEventListener("change", (e) => {
+  setBrowserExtensionLocalStorage({ isPasteSameAsCopy: e.target.checked });
 });
-loadFormatElement.addEventListener("change", (e) => {
-  setBrowserExtensionLocalStorage({ loadFormat: e.target.value });
+pasteFormatElement.addEventListener("change", (e) => {
+  setBrowserExtensionLocalStorage({ pasteFormat: e.target.value });
 });
 
 copyWindowElement.addEventListener("change", (e) => {
@@ -26,13 +26,13 @@ copyWindowElement.addEventListener("change", (e) => {
 });
 
 window.addEventListener("DOMContentLoaded", async () => {
-  const { copyFormat, includeBookmark, tags, isLoadSameAsCopy, loadFormat, copyWindow } =
+  const { copyFormat, includeBookmark, tags, isPasteSameAsCopy, pasteFormat, copyWindow } =
     await browser.storage.local.get({
       copyFormat: "basic",
       includeBookmark: false,
       tags: [],
-      isLoadSameAsCopy: true,
-      loadFormat: "basic",
+      isPasteSameAsCopy: true,
+      pasteFormat: "basic",
       copyWindow: "current",
     });
 
@@ -70,20 +70,20 @@ window.addEventListener("DOMContentLoaded", async () => {
   tagsElement.BulmaTagsInput().on("after.add", saveTagsToStorage); // Listen to event: Triggered once a tag has been added
   tagsElement.BulmaTagsInput().on("after.remove", saveTagsToStorage); // Listen to event: Triggered once a tag has been removed
 
-  isLoadSameAsCopyElement.checked = isLoadSameAsCopy;
+  isPasteSameAsCopyElement.checked = isPasteSameAsCopy;
 
-  switch (loadFormat) {
+  switch (pasteFormat) {
     case "basic":
-      loadFormatElement.selectedIndex = 0;
+      pasteFormatElement.selectedIndex = 0;
       break;
     case "json":
-      loadFormatElement.selectedIndex = 1;
+      pasteFormatElement.selectedIndex = 1;
       break;
     case "markdown":
-      loadFormatElement.selectedIndex = 2;
+      pasteFormatElement.selectedIndex = 2;
       break;
     case "url":
-      loadFormatElement.selectedIndex = 3;
+      pasteFormatElement.selectedIndex = 3;
       break;
   }
 
