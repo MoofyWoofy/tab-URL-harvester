@@ -6,7 +6,8 @@
   "scripts": {
     "prestart": "web-ext lint",
     "start": "web-ext run",
-    "build": "web-ext build"
+    "build": "web-ext build",
+    "dev-android": "web-ext run --target=firefox-android"
   },
   "keywords": [],
   "author": "",
